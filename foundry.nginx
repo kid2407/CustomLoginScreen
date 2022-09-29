@@ -1,14 +1,14 @@
 # Add this part to the http directive in your nginx.conf
 http{
-    log_format postdata escape=json $request_body;
+    log_format postdata escape=none $request_body;
 }
 
-# Use this as your nginx configuration file, replace <host> with your relevant data
+# ----------
+
+# Add this in your nginx configuration file, replace <host> with your relevant data
 server {
-    server_name             <host>>;
-    listen                  80;
-    # Sets the Max Upload size to 300 MB
-    client_max_body_size 300M;
+
+    # [...]
 
     location / {
         # Some magic to get around nginx not supporting multiple ifs
@@ -25,14 +25,6 @@ server {
             access_log /var/log/nginx/foundry_setup_calls.log postdata;
         }
 
-        # Same headers as for normal Foundry
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "Upgrade";
-
-        # By passing the request to a proxy, nginx populates the $request_body variable, otherwise it would be empty
-        proxy_pass http://localhost:30000;
+        # Rest of the config where you pass the request to Foundry
     }
 }

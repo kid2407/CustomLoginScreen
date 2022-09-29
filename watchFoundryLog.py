@@ -77,15 +77,16 @@ def exchange_sheet(world: str, sheet_dict: dict[str, str]):
     """
     Update the style.css for the specified world, if None reset to default
     """
+
+    target = open(target_file_path, 'wt')
+    copyfileobj(open("original.css", 'rt'), target)
     if world not in sheet_dict:
-        print("Style sheet for world \"{}\" does not exist.".format(world))
+        print("Style sheet for world \"{}\" does not exist. Using default sheet.".format(world))
     else:
-        target = open(target_file_path, 'wt')
         sheet_path = sheet_dict[world]
-        for single_file in ["original.css", sheet_path]:
-            copyfileobj(open(single_file, 'rt'), target)
-        target.close()
-        print("Updated style.css for world \"{}\".".format(world))
+        copyfileobj(open(sheet_path, 'rt'), target)
+    target.close()
+    print("Updated style.css for world \"{}\".".format(world))
 
 
 if __name__ == '__main__':

@@ -1,9 +1,7 @@
 # Add this part to the http directive in your nginx.conf
-http{
+http {
     log_format postdata escape=none $request_body;
 }
-
-# ----------
 
 # Add this in your nginx configuration file, replace <host> with your relevant data
 server {
